@@ -86,6 +86,7 @@ $(function () {
     // we pass all JSON objects to this fx
       function displayResults (weatherData, weatherGifData, cityGifData) {
           $('#results-table tbody').append(
+            // here for the last gif descibing the weather we choose the 3rd gif cos it represents the weather description for some occasions (like overcast clouds) better
             `<tr>
               <td>${weatherData.data.name}</td>
               <td>${weatherData.data.main.temp}</td>
