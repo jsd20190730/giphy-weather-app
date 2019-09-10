@@ -1,23 +1,22 @@
 $(function () {
-  $(function () {
+
     $('#search').submit((event) => {
       // we need preventDefault so that submit doesn't send anything to the server which we don't have
       event.preventDefault()
-      // $('#query').val() reads the value as a string of the imput aka whatever the user typed in; that string becomes the value of cityname
-      const cityName = $('#query').val()
-      console.log(cityName)
+      // $('#query').val() reads the value as a string of the imput aka whatever the user typed in; that string becomes the value of query(imput)
+      const query = $('#query').val()
+      console.log(query)
       // this will add new <tr>s into html
       $('#results-table tbody').html('')
-      // we passing the value of cityName on search fx
-      search(cityName)
+      // we passing the value of query on search fx
+      search(query)
     })
 
-    // searching for weatherData; query is city
+    // searching for weather data
     async function search (query) {
       try {
         const url = 'https://api.openweathermap.org/data/2.5/weather'
         const apiKey = 'a9774b2823a4f33972a6f727864cbae9'
-        // const metric = 'units=metric'
         const response = await axios.get(url, {
            params: {
              q: query,
@@ -27,7 +26,7 @@ $(function () {
         })
         // response is JSON
         console.log(response)
-        // we passing on JSON and city string onto another fx
+        // we passing on JSON and city string onto another fx => this is weather data combined
         searchGiphy(response, query)
       } catch (e) {
         console.log(e)
@@ -35,7 +34,7 @@ $(function () {
       }
      }
 
-    // searching gifs
+    // searching gifs city
     async function searchGiphy (weatherData, city) {
       try {
         const url = 'https://api.giphy.com/v1/gifs/search'
@@ -51,7 +50,7 @@ $(function () {
           }
         })
         console.log(response)
-        // we make a request to giphy & get back a response which is a weather gif img & other data
+        // we make a request to giphy & get back a response which is a weather description gif
         searchGiphyCity(weatherData, response, city)
         } catch (e) {
         console.log(e)
@@ -59,7 +58,7 @@ $(function () {
       }
     }
 
-    async function searchGiphyCity (weatherData, weatherGifData, city) {
+    async function searchGiphyCity (weatherData, weatherGifData, query) {
       try {
         const url = 'https://api.giphy.com/v1/gifs/search'
         const apiKey = 'TFRIsex5cmzXTz0VsyUyvbKgqa3FBK8P'
@@ -69,9 +68,9 @@ $(function () {
           url, {
           params: {
             // weatherData.data.weather[0].description as q because we need to search a gif that is the description of current weather(find it in console.log)
-            q: city,
+            q: query,
             api_key: apiKey,
-            limit: 50
+            limit: 30
           }
         })
         console.log(response)
@@ -83,7 +82,7 @@ $(function () {
       }
     }
 
-    // here the local var city & gif refers to JSON object from OpenWeather & GIPHY
+
     // we pass all JSON objects to this fx
       function displayResults (weatherData, weatherGifData, cityGifData) {
           $('#results-table tbody').append(
@@ -94,11 +93,9 @@ $(function () {
               <td>${weatherData.data.main.temp_min}</td>
               <td>${weatherData.data.main.temp_max}</td>
               <td><img src="${cityGifData.data.data[0].images.fixed_height.url}"></td>
-              <td><img src="${weatherGifData.data.data[0].images.fixed_height.url}"></td>
+              <td><img src="${weatherGifData.data.data[3].images.fixed_height.url}"></td>
             </tr>`
           )
       }
 
   })
-
-})
