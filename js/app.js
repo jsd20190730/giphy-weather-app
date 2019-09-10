@@ -62,12 +62,9 @@ $(function () {
       try {
         const url = 'https://api.giphy.com/v1/gifs/search'
         const apiKey = 'TFRIsex5cmzXTz0VsyUyvbKgqa3FBK8P'
-        // Axios is a JavaScript library you can use to perform HTTP requests
-        // why we have to use axios here?
         const response = await axios.get(
           url, {
           params: {
-            // weatherData.data.weather[0].description as q because we need to search a gif that is the description of current weather(find it in console.log)
             q: query,
             api_key: apiKey,
             limit: 30
@@ -86,7 +83,7 @@ $(function () {
     // we pass all JSON objects to this fx
       function displayResults (weatherData, weatherGifData, cityGifData) {
           $('#results-table tbody').append(
-            // here for the last gif descibing the weather we choose the 3rd gif cos it represents the weather description for some occasions (like overcast clouds) better
+            
             `<tr>
               <td>${weatherData.data.name}</td>
               <td>${weatherData.data.main.temp}</td>
@@ -94,7 +91,7 @@ $(function () {
               <td>${weatherData.data.main.temp_min}</td>
               <td>${weatherData.data.main.temp_max}</td>
               <td><img src="${cityGifData.data.data[0].images.fixed_height.url}"></td>
-              <td><img src="${weatherGifData.data.data[3].images.fixed_height.url}"></td>
+              <td><img src="${weatherGifData.data.data[0].images.fixed_height.url}"></td>
             </tr>`
           )
       }
