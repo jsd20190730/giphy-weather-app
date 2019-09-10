@@ -1,6 +1,6 @@
 // lESSON 10
 
-$(function () {
+$(function() {
 
   $('#search').submit((event) => {
     event.preventDefault()
@@ -15,11 +15,11 @@ $(function () {
     search(query)
   })
 
-//fix this
-function displayResults (gifs, weather, gifsagain) {
-  // use index of gifs to increment counter for gifsagain
-  gifs.forEach((gif, index) => {
-    $('#results-table tbody').append(
+  //fix this
+  function displayResults(gifs, weather, gifsagain) {
+    // use index of gifs to increment counter for gifsagain
+    gifs.forEach((gif, index) => {
+      $('#results-table tbody').append(
         `<tr>
           <td>${weather.name}</td>
           <td>${weather.main.temp}</td>
@@ -29,14 +29,14 @@ function displayResults (gifs, weather, gifsagain) {
           <td><img src="${gif.images.fixed_height.url}"></td>
           <td><img src="${gifsagain[index].images.fixed_height.url}"></td>
         </tr>`
-    )
-  })
-}
+      )
+    })
+  }
 
   //note added async to function
-  async function search (searchTerm) {
+  async function search(searchTerm) {
 
-    try{
+    try {
       const giphyURL = 'https://api.giphy.com/v1/gifs/search' //api endpoint at Giphy
       const giphyKey = '2qqBvRkz56JiTUcMbOJbak5VRRLEbV84'
 
@@ -47,28 +47,28 @@ function displayResults (gifs, weather, gifsagain) {
       const responseGiphy = await axios.get(
         giphyURL, {
           params: {
-            q:searchTerm,
-            api_key:giphyKey,
-            limit:5
-        }
-      })
+            q: searchTerm,
+            api_key: giphyKey,
+            limit: 5
+          }
+        })
 
       // openweather
       const responseWeather = await axios.get(
         weatherURL, {
           params: {
             q: searchTerm,
-            appid:weatherKey
+            appid: weatherKey
           }
         })
 
-        //get data from giphy again using the open weather api's description
-        const responseGiphyAgain = await axios.get(
-          giphyURL, {
-            params: {
-              q:responseWeather.data.weather[0].description,
-              api_key:giphyKey,
-              limit:5
+      //get data from giphy again using the open weather api's description
+      const responseGiphyAgain = await axios.get(
+        giphyURL, {
+          params: {
+            q: responseWeather.data.weather[0].description,
+            api_key: giphyKey,
+            limit: 5
           }
         })
 
@@ -79,9 +79,9 @@ function displayResults (gifs, weather, gifsagain) {
       // pass array as function params
       displayResults(responseGiphy.data.data, responseWeather.data, responseGiphyAgain.data.data)
 
-    } catch(error) {
+    } catch (error) {
       console.log(error)
       alert("Oh oh, something went wrong!")
     }
-}
+  }
 })
